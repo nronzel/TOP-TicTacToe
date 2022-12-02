@@ -1,6 +1,6 @@
 const domElementCache = {
   "gridItem": Array.from(document.querySelectorAll("#gridItem")),
-  "clearBtn": document.querySelector("button.clear-btn"),
+  "restartBtn": document.querySelector("button.restart-btn"),
 };
 
 // IIFE to listen for clicks to place an X
@@ -12,11 +12,11 @@ const domElementCache = {
   });
 })();
 
-
-const  clear = () => {
+// clears board
+const  restart = () => {
   domElementCache.gridItem.forEach((item) => {
     item.textContent = "";
   })
 }
 
-domElementCache.clearBtn.addEventListener('click', clear)
+domElementCache.restartBtn.addEventListener('click', restart)

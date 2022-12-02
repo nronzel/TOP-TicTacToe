@@ -41,13 +41,13 @@ body {
   margin-top: 50px;
 }
 
-.clear {
+.restart {
   width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
 
-.clear-btn {
+.restart-btn {
   padding: 5px;
 }
