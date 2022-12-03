@@ -1,6 +1,6 @@
 const domCache = {
   "gridContainer": document.querySelector(".grid-container"),
-  "gridItem": Array.from(document.querySelectorAll( "#gridItem" )),
+  "gridItem": Array.from(document.querySelectorAll( ".gridItem" )),
   "restartBtn": document.querySelector( "button.restart-btn" ),
   // "marker": document.getElementById( "select" ),
 };
@@ -11,36 +11,28 @@ const counter = {
 };
 
 // use event delegation to get which cell was clicked
-domCache.gridContainer.onclick = (e) => {
+domCache.gridContainer.onclick = ( e ) => {
   let gridItem = e.target;
-  if (!gridItem) return;
-  
+  if ( !gridItem ) return;
+  // checks if cell is already chosen, and determines whose turn it is based on the counter
   if ( counter.count % 2 == 0 ) {
     if ( gridItem.textContent ) {
       return
     } else {
       gridItem.textContent = playerTwo.marker;
       counter.count++
-      console.log(counter.count)
     }
-  } else {
-    if ( gridItem.textContent ) {
+  } else if ( gridItem.textContent ) {
       return
   } else {
       gridItem.textContent = playerOne.marker;
       counter.count++
-      console.log(counter.count)
     }
-  }
-
 }
 
 const player = ( marker ) => {
   return { 
     marker,
-    makeMove() {
-
-    }
   }
 }
 
@@ -55,4 +47,4 @@ const restart = () => {
 const playerOne = player("X");
 const playerTwo = player("O");
 
-domCache.restartBtn.addEventListener( 'click', restart )
+domCache.restartBtn.onclick = restart;

@@ -16,7 +16,7 @@ body {
 }
 
 /* Grid Section */
-#gridItem {
+.gridItem {
   width: 100px;
   height: 100px;
   border: 1px solid rgba(64, 64, 64, 0.429);
