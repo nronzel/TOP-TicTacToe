@@ -1,4 +1,5 @@
 const domCache = {
+  "gridContainer": document.querySelector(".grid-container"),
   "gridItem": Array.from(document.querySelectorAll( "#gridItem" )),
   "restartBtn": document.querySelector( "button.restart-btn" ),
   // "marker": document.getElementById( "select" ),
@@ -9,33 +10,29 @@ const counter = {
   "count": 1, // if count == 10, no more turns left
 };
 
-// event listener loop should be main game loop
-// inside the event listener loop it should check for two things:
-//  1. if there is already a letter in the selected square
-//  2. if the count % 2 == 0, playerTwo's turn, else playerOne's turn
+// use event delegation to get which cell was clicked
+domCache.gridContainer.onclick = (e) => {
+  let gridItem = e.target;
+  if (!gridItem) return;
+  
+  if ( counter.count % 2 == 0 ) {
+    if ( gridItem.textContent ) {
+      return
+    } else {
+      gridItem.textContent = playerTwo.marker;
+      counter.count++
+      console.log(counter.count)
+    }
+  } else {
+    if ( gridItem.textContent ) {
+      return
+  } else {
+      gridItem.textContent = playerOne.marker;
+      counter.count++
+      console.log(counter.count)
+    }
+  }
 
-const gameLoop = () => {
-  domCache.gridItem.forEach(( item ) => {
-    item.addEventListener( "click", () => {
-      if ( counter.count % 2 == 0 ) {
-        if ( item.textContent ) {
-          return
-        } else {
-          item.textContent = playerTwo.marker;
-          counter.count++
-          console.log(counter.count)
-        }
-      } else {
-        if ( item.textContent ) {
-          return
-      } else {
-          item.textContent = playerOne.marker;
-          counter.count++
-          console.log(counter.count)
-        }
-      }
-    })
-  })
 }
 
 const player = ( marker ) => {
@@ -47,17 +44,15 @@ const player = ( marker ) => {
   }
 }
 
-const playerOne = player("X");
-const playerTwo = player("O");
-
-gameLoop();
-
 // clears board and resets turn counter
 const restart = () => {
   domCache.gridItem.forEach(( item ) => {
     item.textContent = "";
-    counter.count = 0;
+    counter.count = 1;
   })
 }
+
+const playerOne = player("X");
+const playerTwo = player("O");
 
 domCache.restartBtn.addEventListener( 'click', restart )
