@@ -18,11 +18,21 @@ const gameLoop = () => {
   domCache.gridItem.forEach(( item ) => {
     item.addEventListener( "click", () => {
       if ( counter.count % 2 == 0 ) {
-        item.textContent = playerTwo.marker;
-        counter.count++
+        if ( item.textContent ) {
+          return
+        } else {
+          item.textContent = playerTwo.marker;
+          counter.count++
+          console.log(counter.count)
+        }
       } else {
-        item.textContent = playerOne.marker;
-        counter.count++
+        if ( item.textContent ) {
+          return
+      } else {
+          item.textContent = playerOne.marker;
+          counter.count++
+          console.log(counter.count)
+        }
       }
     })
   })
