@@ -2,6 +2,7 @@ const domCache = {
   gridContainer: document.querySelector(".grid-container"),
   gridItem: Array.from(document.querySelectorAll(".gridItem")),
   restartBtn: document.querySelector("button.restart-btn"),
+  winnerText: document.querySelector(".winner"),
 };
 
 // turn counter
@@ -29,23 +30,28 @@ domCache.gridContainer.onclick = (e) => {
   if (counter.count % 2 == 0) {
     gridItem.textContent = playerTwo.marker;
     playerTwo.choices.push(gridItem.id);
-    console.log(playerTwo.choices)
     counter.count++;
   } else {
     gridItem.textContent = playerOne.marker;
     playerOne.choices.push(gridItem.id);
-    console.log(playerOne.choices)
     counter.count++;
   }
-  checkForWin();
+  checkForWin()
 };
 
 const checkForWin = () => {
   winArray.forEach((arr) => {
+    let win = false
     if (arr.every(elem => playerOne.choices.includes(elem))) {
-      console.log("Player One Wins!");
+      domCache.winnerText.textContent = "Player One Wins!";
+      domCache.gridContainer.onclick = null
+      win = true;
     } else if (arr.every(elem => playerTwo.choices.includes(elem))){
-      console.log("Player Two Wins!");
+      domCache.winnerText.textContent = "Player Two Wins!";
+      domCache.gridContainer.onclick = null
+      win = true;
+    } else if (counter.count == 10 && win == false) {
+      domCache.winnerText.textContent = "Draw"
     }
   })
 }
@@ -62,13 +68,16 @@ const player = (marker) => {
 const restart = () => {
   domCache.gridItem.forEach((item) => {
     item.textContent = "";
-    counter.count = 1;
-    playerOne.choices = [];
-    playerTwo.choices = [];
   });
+  counter.count = 1;
+  playerOne.choices = [];
+  playerTwo.choices = [];
+  domCache.winnerText.textContent = "Tic-Tac-Toe";
 };
 
 const playerOne = player("X");
 const playerTwo = player("O");
 
 domCache.restartBtn.onclick = restart;
+
+console.log(domCache.gridContainer)
