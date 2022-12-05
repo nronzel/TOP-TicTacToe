@@ -3,6 +3,7 @@ const domCache = {
   gridItem: Array.from(document.querySelectorAll(".gridItem")),
   restartBtn: document.querySelector("button.restart-btn"),
   winnerText: document.querySelector(".winner"),
+  turn: document.querySelector(".turn"),
 };
 
 const player = (marker) => {
@@ -36,23 +37,25 @@ const Game = (() => {
   // compares each players "choices" array against the winArray
   // to see if it contains all of the moves needed for a win
   const checkForWin = () => {
-    winArray.forEach((arr) => {
+    winArray.forEach((winCombo) => {
       let win = false;
-      if (arr.every((elem) => playerOne.choices.includes(elem))) {
-        domCache.winnerText.textContent = "Player One Wins!";
+      if (winCombo.every((elem) => playerOne.choices.includes(elem))) {
+        domCache.winnerText.textContent = `Player One Wins!`;
         domCache.gridContainer.onclick = null;
+        domCache.turn.textContent = ""
         win = true;
-        console.log(`Win: ${win}`);
-      } else if (arr.every((elem) => playerTwo.choices.includes(elem))) {
-        domCache.winnerText.textContent = "Player Two Wins!";
+      } else if (winCombo.every((elem) => playerTwo.choices.includes(elem))) {
+        domCache.winnerText.textContent = `Player Two Wins!`;
         domCache.gridContainer.onclick = null;
+        domCache.turn.textContent = ""
         win = true;
-        console.log(`Win: ${win}`);
       } else if (win == false && count == 10) {
         domCache.winnerText.textContent = "Draw";
+        domCache.turn.textContent = ""
       }
     });
   };
+
   // main gameplay loop
   const playGame = () => {
     domCache.gridContainer.onclick = (e) => {
@@ -65,10 +68,12 @@ const Game = (() => {
         gridItem.textContent = playerTwo.marker;
         playerTwo.choices.push(gridItem.id);
         count++;
+        domCache.turn.textContent = "Player One to move.."
       } else {
         gridItem.textContent = playerOne.marker;
         playerOne.choices.push(gridItem.id);
         count++;
+        domCache.turn.textContent = "Player Two to move.."
       }
       checkForWin();
     };
@@ -84,6 +89,7 @@ const Game = (() => {
     playerOne.choices = [];
     playerTwo.choices = [];
     domCache.winnerText.textContent = "Tic-Tac-Toe";
+    domCache.turn.textContent = "Player One to move.."
     playGame();
   };
 
