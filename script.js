@@ -42,16 +42,16 @@ const Game = (() => {
       if (winCombo.every((elem) => playerOne.choices.includes(elem))) {
         domCache.winnerText.textContent = `Player One Wins!`;
         domCache.gridContainer.onclick = null;
-        domCache.turn.textContent = "";
+        domCache.turn.textContent = "Play Again?";
         win = true;
       } else if (winCombo.every((elem) => playerTwo.choices.includes(elem))) {
         domCache.winnerText.textContent = `Player Two Wins!`;
         domCache.gridContainer.onclick = null;
-        domCache.turn.textContent = "";
+        domCache.turn.textContent = "Play Again?";
         win = true;
       } else if (win == false && count == 10) {
         domCache.winnerText.textContent = "Draw";
-        domCache.turn.textContent = "";
+        domCache.turn.textContent = "Play Again?";
       }
     });
   };
