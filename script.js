@@ -42,16 +42,16 @@ const Game = (() => {
       if (winCombo.every((elem) => playerOne.choices.includes(elem))) {
         domCache.winnerText.textContent = `Player One Wins!`;
         domCache.gridContainer.onclick = null;
-        domCache.turn.textContent = ""
+        domCache.turn.textContent = "";
         win = true;
       } else if (winCombo.every((elem) => playerTwo.choices.includes(elem))) {
         domCache.winnerText.textContent = `Player Two Wins!`;
         domCache.gridContainer.onclick = null;
-        domCache.turn.textContent = ""
+        domCache.turn.textContent = "";
         win = true;
       } else if (win == false && count == 10) {
         domCache.winnerText.textContent = "Draw";
-        domCache.turn.textContent = ""
+        domCache.turn.textContent = "";
       }
     });
   };
@@ -68,12 +68,12 @@ const Game = (() => {
         gridItem.textContent = playerTwo.marker;
         playerTwo.choices.push(gridItem.id);
         count++;
-        domCache.turn.textContent = "Player One to move.."
+        domCache.turn.textContent = "Player One to move..";
       } else {
         gridItem.textContent = playerOne.marker;
         playerOne.choices.push(gridItem.id);
         count++;
-        domCache.turn.textContent = "Player Two to move.."
+        domCache.turn.textContent = "Player Two to move..";
       }
       checkForWin();
     };
@@ -89,7 +89,7 @@ const Game = (() => {
     playerOne.choices = [];
     playerTwo.choices = [];
     domCache.winnerText.textContent = "Tic-Tac-Toe";
-    domCache.turn.textContent = "Player One to move.."
+    domCache.turn.textContent = "Player One to move..";
     playGame();
   };
 
