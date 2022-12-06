@@ -1,18 +1,85 @@
 const domCache = {
   gridContainer: document.querySelector(".grid-container"),
   gridItem: Array.from(document.querySelectorAll(".gridItem")),
-  restartBtn: document.querySelector("button.restart-btn"),
+  restartBtn: document.getElementById("restart-btn"),
   winnerText: document.querySelector(".winner"),
   turn: document.querySelector(".turn"),
+  settingsBtn: document.getElementById("settingsBtn")
 };
 
 const player = (marker) => {
   let choices = [];
+  let name = ""
   return {
+    name,
     marker,
     choices,
   };
 };
+
+const Modal = (() => {
+  const modalContainer = document.querySelector(".modal")
+  const vsPlayerSelect = document.querySelector("#vsPlayer")
+  const vsCpuSelect = document.querySelector("#vsCPU")
+  const overlay = document.querySelector(".overlay")
+  const playerSettings = document.querySelector(".player-settings")
+  const okayBtn = document.querySelector(".okay-btn")
+  const clearBtn = document.querySelector(".clear-btn")
+
+  const openModal = () => {
+    modalContainer.style.display = "block"
+    overlay.style.display = "block"
+  }
+
+  const closeModal = () => {
+    modalContainer.style.display = "none"
+    overlay.style.display = "none"
+  }
+
+  const openPlayerSettings = () => {
+    playerSettings.classList.remove("hidden")
+  }
+
+  const closePlayerSettings = () => {
+    playerSettings.classList.add("hidden")
+  };
+
+  const getNames = (() => {
+    const playerOneName = document.getElementById("playerOneName")
+    const playerTwoName = document.getElementById("playerTwoName")
+
+    return {
+      playerOneName,
+      playerTwoName,
+    }
+  })();
+
+  const clearNames = () => {
+    getNames.playerOneName.textContent = ""
+    getNames.playerOneName.value = ""
+    getNames.playerTwoName.textContent = ""
+    getNames.playerTwoName.value = ""
+    console.log(getNames.playerOneName)
+    console.log(getNames.playerTwoName)
+  }
+
+  const modalLoop = () => {
+    openModal();
+    vsPlayerSelect.onclick = openPlayerSettings
+    vsCpuSelect.onclick =  closePlayerSettings
+    overlay.onclick = closeModal
+    let names = getNames
+    okayBtn.onclick = names
+    clearBtn.onclick = clearNames
+    console.log(names)
+  }
+
+  return {
+    modalLoop,
+    getNames,
+  }
+})()
+
 
 const Game = (() => {
   // move counter | count=10 means no more moves
@@ -33,6 +100,13 @@ const Game = (() => {
     ["1,1", "2,2", "3,3"], // across l->r
     ["1,3", "2,2", "3,1"], // across r->l
   ];
+
+  // game board
+  // const gameBoard = [
+  //   ["1,1", "1,2", "1,3"],
+  //   ["2,1", "2,2", "2,3"],
+  //   ["3,1", "3,2", "3,3"],
+  // ]
 
   // compares each players "choices" array against the winArray
   // to see if it contains all of the moves needed for a win
@@ -58,6 +132,7 @@ const Game = (() => {
 
   // main gameplay loop
   const playGame = () => {
+    domCache.turn.textContent = "Player One to move..";
     domCache.gridContainer.onclick = (e) => {
       let gridItem = e.target;
       if (!gridItem) return;
@@ -78,6 +153,7 @@ const Game = (() => {
       checkForWin();
     };
     domCache.restartBtn.onclick = restart;
+    domCache.settingsBtn.onclick = Modal.modalLoop
   };
 
   // resets the board and game variables to prepare for new game
@@ -98,4 +174,5 @@ const Game = (() => {
   };
 })();
 
+Modal.modalLoop();
 Game.playGame();

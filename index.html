@@ -10,7 +10,7 @@
   </head>
   <body>
     <p class="winner">Tic-Tac-Toe</p>
-    <p class="turn">Player One to move..</p>
+    <p class="turn"></p>
     <div class="grid-container">
       <div id="1,1" class="gridItem"></div>
       <div id="1,2" class="gridItem grid-col"></div>
@@ -22,6 +22,30 @@
       <div id="3,2" class="gridItem grid-col"></div>
       <div id="3,3" class="gridItem"></div>
     </div>
-    <div class="restart"><button class="restart-btn">Restart</button></div>
+    <div class="button-group">
+      <button id="restart-btn" class="btn">Restart</button>
+      <button id="settingsBtn" class="btn">Settings</button>
+    </div>
+    <div class="modal">
+      <div class="modal-contents">
+        <h2>Choose Your Settings</h2>
+        <input class="game-mode" type="radio" name="game-mode" id="vsPlayer">
+        <label for="vsPlayer">vs. Player</label>
+        <input class="game-mode" type="radio" name="game-mode" id="vsCPU">
+        <label for="vs-cpu">vs. CPU</label>
+        <div class="player-settings hidden">
+          <div class="flex-col">
+            <input class="player-name" type="text" name="player-name" id="playerOneName" placeholder="Player 1 Name">
+            <input class="player-name" type="text" name="player-name" id="playerTwoName" placeholder="Player 2 Name">
+          </div>
+        </div>
+        <div class="modal-btn">
+          <button class="okay-btn">OK</button>
+          <button class="clear-btn">Clear</button>
+        </div>
+
+      </div>
+    </div>
+    <div class="overlay"></div>
   </body>
 </html>

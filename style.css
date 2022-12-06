@@ -65,11 +65,17 @@ body {
   margin-top: 10px;
 }
 
-.restart-btn {
+.btn {
   padding: 10px;
   margin-top: 1rem;
 }
 
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Screen Text */
 .winner {
   font-size: 3rem;
   margin-top: 3rem;
@@ -78,4 +84,42 @@ body {
 
 .turn {
   font-size: .7rem;
+}
+
+/* Modal */
+.hidden {
+  display: none;
+}
+
+.modal {
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.512);
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-btn {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  gap: 1rem;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
 }
