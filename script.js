@@ -1,28 +1,26 @@
 const domCache = {
   gridContainer: document.querySelector(".grid-container"),
   gridItem: Array.from(document.querySelectorAll(".gridItem")),
-  restartBtn: document.getElementById("restart-btn"),
+  restartBtn: document.getElementById("restartBtn"),
   winnerText: document.querySelector(".winner"),
   turn: document.querySelector(".turn"),
-  settingsBtn: document.getElementById("settingsBtn")
+  settingsBtn: document.getElementById("settingsBtn"),
+  playerOneName: document.getElementById("playerOneName"),
+  playerTwoName: document.getElementById("playerTwoName"),
 };
 
-const player = (marker) => {
+const Player = (name, marker) => {
   let choices = [];
-  let name = ""
   return {
     name,
     marker,
     choices,
-  };
-};
+  }
+}
 
 const Modal = (() => {
   const modalContainer = document.querySelector(".modal")
-  const vsPlayerSelect = document.querySelector("#vsPlayer")
-  const vsCpuSelect = document.querySelector("#vsCPU")
   const overlay = document.querySelector(".overlay")
-  const playerSettings = document.querySelector(".player-settings")
   const okayBtn = document.querySelector(".okay-btn")
   const clearBtn = document.querySelector(".clear-btn")
 
@@ -36,47 +34,23 @@ const Modal = (() => {
     overlay.style.display = "none"
   }
 
-  const openPlayerSettings = () => {
-    playerSettings.classList.remove("hidden")
-  }
-
-  const closePlayerSettings = () => {
-    playerSettings.classList.add("hidden")
-  };
-
-  const getNames = (() => {
-    const playerOneName = document.getElementById("playerOneName")
-    const playerTwoName = document.getElementById("playerTwoName")
-
-    return {
-      playerOneName,
-      playerTwoName,
-    }
-  })();
-
   const clearNames = () => {
-    getNames.playerOneName.textContent = ""
-    getNames.playerOneName.value = ""
-    getNames.playerTwoName.textContent = ""
-    getNames.playerTwoName.value = ""
-    console.log(getNames.playerOneName)
-    console.log(getNames.playerTwoName)
+    domCache.playerOneName.value = ""
+    domCache.playerTwoName.value = ""
   }
 
   const modalLoop = () => {
     openModal();
-    vsPlayerSelect.onclick = openPlayerSettings
-    vsCpuSelect.onclick =  closePlayerSettings
     overlay.onclick = closeModal
-    let names = getNames
-    okayBtn.onclick = names
     clearBtn.onclick = clearNames
-    console.log(names)
+    okayBtn.onclick = () => {
+      Game.playGame()
+      closeModal()
+    }
   }
 
   return {
     modalLoop,
-    getNames,
   }
 })()
 
@@ -85,9 +59,9 @@ const Game = (() => {
   // move counter | count=10 means no more moves
   let count = 1;
 
-  // create the players
-  const playerOne = player("X");
-  const playerTwo = player("O");
+  // create players
+  let playerOne = Player(domCache.playerOneName.value, "X")
+  let playerTwo = Player(domCache.playerTwoName.value, "O")
 
   // all winning combos
   const winArray = [
@@ -114,12 +88,12 @@ const Game = (() => {
     winArray.forEach((winCombo) => {
       let win = false;
       if (winCombo.every((elem) => playerOne.choices.includes(elem))) {
-        domCache.winnerText.textContent = `Player One Wins!`;
+        domCache.winnerText.textContent = `${playerOne.name} Wins!`;
         domCache.gridContainer.onclick = null;
         domCache.turn.textContent = "Play Again?";
         win = true;
       } else if (winCombo.every((elem) => playerTwo.choices.includes(elem))) {
-        domCache.winnerText.textContent = `Player Two Wins!`;
+        domCache.winnerText.textContent = `${playerTwo.name} Wins!`;
         domCache.gridContainer.onclick = null;
         domCache.turn.textContent = "Play Again?";
         win = true;
@@ -132,8 +106,9 @@ const Game = (() => {
 
   // main gameplay loop
   const playGame = () => {
-    domCache.turn.textContent = "Player One to move..";
+    domCache.turn.textContent = `${playerOne.name} to move..`;
     domCache.gridContainer.onclick = (e) => {
+      console.log(domCache.playerOneName.value)
       let gridItem = e.target;
       if (!gridItem) return;
       // checks if cell is already chosen, and determines turn
@@ -143,12 +118,12 @@ const Game = (() => {
         gridItem.textContent = playerTwo.marker;
         playerTwo.choices.push(gridItem.id);
         count++;
-        domCache.turn.textContent = "Player One to move..";
+        domCache.turn.textContent = `${playerOne.name} to move..`;
       } else {
         gridItem.textContent = playerOne.marker;
         playerOne.choices.push(gridItem.id);
         count++;
-        domCache.turn.textContent = "Player Two to move..";
+        domCache.turn.textContent = `${playerTwo.name} to move..`;
       }
       checkForWin();
     };
@@ -166,7 +141,7 @@ const Game = (() => {
     playerTwo.choices = [];
     domCache.winnerText.textContent = "Tic-Tac-Toe";
     domCache.turn.textContent = "Player One to move..";
-    playGame();
+    playGame()
   };
 
   return {
@@ -174,5 +149,4 @@ const Game = (() => {
   };
 })();
 
-Modal.modalLoop();
-Game.playGame();
+Modal.modalLoop()
