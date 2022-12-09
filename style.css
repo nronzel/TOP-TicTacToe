@@ -98,7 +98,8 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-
+  padding: 25px;
+  border-radius: 5px;
 }
 
 .overlay {
@@ -114,12 +115,29 @@ body {
 .modal-btn {
   display: flex;
   justify-content: center;
-  padding: 10px;
   gap: 1rem;
+  margin-top: 10px;
+}
+
+.modalBtn {
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid rgb(194, 194, 194);
+}
+
+.modalBtn:hover {
+  background-color: rgba(0, 0, 0, 0.237);
+}
+
+.clear-btn {
+  background: transparent;
+  border: 1px solid rgb(194, 194, 194);
+  color: rgb(156, 156, 156);
 }
 
 .flex-col {
   display: flex;
   flex-direction: column;
   gap: .5rem;
+  margin-top: 10px;
 }

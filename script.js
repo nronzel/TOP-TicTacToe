@@ -9,59 +9,27 @@ const domCache = {
   playerTwoName: document.getElementById("playerTwoName"),
 };
 
-const Player = (name, marker) => {
-  let choices = [];
-  return {
-    name,
-    marker,
-    choices,
-  }
+const createPlayer = (name, marker) => {
+  let player = Object.create(playerActions)
+  player.choices = [];
+  player.name = name;
+  player.marker = marker;
+  return player
 }
 
-const Modal = (() => {
-  const modalContainer = document.querySelector(".modal")
-  const overlay = document.querySelector(".overlay")
-  const okayBtn = document.querySelector(".okay-btn")
-  const clearBtn = document.querySelector(".clear-btn")
-
-  const openModal = () => {
-    modalContainer.style.display = "block"
-    overlay.style.display = "block"
+const playerActions =  {
+  getName() {
+    return this.name
   }
-
-  const closeModal = () => {
-    modalContainer.style.display = "none"
-    overlay.style.display = "none"
-  }
-
-  const clearNames = () => {
-    domCache.playerOneName.value = ""
-    domCache.playerTwoName.value = ""
-  }
-
-  const modalLoop = () => {
-    openModal();
-    overlay.onclick = closeModal
-    clearBtn.onclick = clearNames
-    okayBtn.onclick = () => {
-      Game.playGame()
-      closeModal()
-    }
-  }
-
-  return {
-    modalLoop,
-  }
-})()
-
+}
 
 const Game = (() => {
   // move counter | count=10 means no more moves
   let count = 1;
 
   // create players
-  let playerOne = Player(domCache.playerOneName.value, "X")
-  let playerTwo = Player(domCache.playerTwoName.value, "O")
+  let playerOne = createPlayer(domCache.playerOneName.value, "X")
+  let playerTwo = createPlayer(domCache.playerTwoName.value, "O")
 
   // all winning combos
   const winArray = [
@@ -108,7 +76,6 @@ const Game = (() => {
   const playGame = () => {
     domCache.turn.textContent = `${playerOne.name} to move..`;
     domCache.gridContainer.onclick = (e) => {
-      console.log(domCache.playerOneName.value)
       let gridItem = e.target;
       if (!gridItem) return;
       // checks if cell is already chosen, and determines turn
@@ -146,7 +113,44 @@ const Game = (() => {
 
   return {
     playGame,
-  };
+  }
 })();
+
+const Modal = (() => {
+  const modalContainer = document.querySelector(".modal")
+  const overlay = document.querySelector(".overlay")
+  const okayBtn = document.querySelector(".okay-btn")
+  const clearBtn = document.querySelector(".clear-btn")
+
+  const openModal = () => {
+    modalContainer.style.display = "block"
+    overlay.style.display = "block"
+  }
+
+  const closeModal = () => {
+    modalContainer.style.display = "none"
+    overlay.style.display = "none"
+  }
+
+  const clearNames = () => {
+    domCache.playerOneName.value = ""
+    domCache.playerTwoName.value = ""
+  }
+
+  const modalLoop = () => {
+    openModal();
+    overlay.onclick = closeModal
+    clearBtn.onclick = clearNames
+    okayBtn.onclick = (e) => {
+      e.preventDefault()
+      Game.playGame()
+      closeModal()
+    }
+  }
+
+  return {
+    modalLoop,
+  }
+})()
 
 Modal.modalLoop()
